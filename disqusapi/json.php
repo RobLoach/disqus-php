@@ -339,9 +339,9 @@ class JSON
      *    @access private
      *    @return string Serialized variable
      */
-    function _serialize (  $key = '', &$value ) {
+    function _serialize (  $key, &$value ) {
         $r = '';
-        if ( $key != '')$r .= "\"${key}\" : ";
+        if ( !empty($key)) $r .= '"' . $key . '" : ';
         if ( is_numeric($value) ) {
             $r .= ''.$value.'';
         } else if ( is_string($value) ) {
