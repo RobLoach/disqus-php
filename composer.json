@@ -6,9 +6,6 @@
     "autoload": {
         "classmap": [
             "disqusapi/"
-        ],
-        "exclude-from-classmap": [
-            "/disqusapi/tests/"
         ]
     },
     "include-path": [
