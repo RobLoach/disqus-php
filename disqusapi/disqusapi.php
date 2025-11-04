@@ -76,11 +76,34 @@ class DisqusResource {
             throw new DisqusInterfaceNotDefined();
         }
         $kwargs = (array)$args[0];
+        $missing_required = [];
 
-        foreach ((array)$resource->required as $k) {
-            if (empty($kwargs[$k])) {
-                throw new Exception('Missing required argument: '.$k);
+        foreach ((array)$resource->required as $k) { 
+            
+            $found_and_not_empty = false;
+
+            foreach ($kwargs as $key => $value) { 
+                
+                if (str_starts_with($key, $k)) {
+                    
+                    $suffix = substr($key, strlen($k));
+                    
+                    if ($suffix === '' || str_starts_with($suffix, ':')) {
+                        if (!empty($value)) {
+                            $found_and_not_empty = true;
+                            break; 
+                        }
+                    }
+                }
             }
+
+            if (!$found_and_not_empty) {
+                $missing_required[] = $k;
+            }
+        }
+
+        if (!empty($missing_required)) {
+            throw new Exception('Missing required argument(s): ' . implode(', ', $missing_required));
         }
 
         $api = $this->api;
